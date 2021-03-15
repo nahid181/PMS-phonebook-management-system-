@@ -100,7 +100,7 @@ int Add_Contact()
     fclose(fp);
     printf("\n\tSuccessfully add the contact...");
     int ch;
-    printf("\n\tPress '1' for home or '2' for Exit");
+    printf("\n\n\tPress '1' for home or '2' for Exit");
     printf("\n\tEnter Your Choice:");
     scanf("%d",&ch);
 
@@ -242,8 +242,9 @@ int Delete_Contact()
     fclose(fp);
     fclose(fp1);
     remove("contact.txt");
+    printf("\n\tSuccessfully delete the contact...");
     int ch;
-    printf("\n\tPress '1' for home or '2' for Exit");
+    printf("\n\n\tPress '1' for home or '2' for Exit");
     printf("\n\tEnter Your Choice:");
     scanf("%d",&ch);
 
