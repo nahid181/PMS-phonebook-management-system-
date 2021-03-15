@@ -1,0 +1,475 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<process.h>
+#include<string.h>
+#include<dos.h>
+#include <windows.h>
+
+struct login{
+    char first_name[500];
+    char last_name[500];
+    char s_id_or_u_id[500];
+    char username[500];
+    char password[500];
+
+};
+
+struct Author
+{
+    float email[300];
+    int mob;
+    char name[300];
+}
+
+list;
+
+registe (){
+    FILE *log;
+    log=fopen("login_info.dll","w");
+    struct login l;
+    printf("                                  ****************************************\n");
+    printf("\t\t\t\t\t\t|| REGISTRATION || \n");
+    printf("                                  ****************************************\n");
+    printf("\n\t\t\t\t Enter your first name : ");
+    scanf("%s",l.first_name);
+    printf("\n\t\t\t\t Enter your last name : ");
+    scanf("%s",l.last_name);
+    printf("\n\t\t\t\t Enter your username : ");
+    scanf("%s",l.username);
+    printf("\n\t\t\t\t Enter your password : ");
+    scanf("%s",l.password);
+    fwrite(&l,sizeof(l),1,log);
+    fclose(log);
+    printf("\n\n Congratulation! Registration Successful.");
+    printf("\n\n Now login with your username and password. ");
+    printf("\n\n press any key to continue... ");
+    getch();
+    system("CLS");
+    login();
+}
+login(){
+    char username [200],password[200];
+    FILE *log;
+    log =fopen("login_info.dll","r");
+    struct login l;
+    printf("                                ****************************************\n");
+    printf("\t\t\t\t\t\t || LOGIN || \n");
+    printf("                                ****************************************");
+    printf("\n\t\t\t\tEnter here your Username and Password to Login...");
+    printf("\n\n\t\t\t\tUsername:");
+    scanf("%s",&username);
+    printf("\n\n\t\t\t\tPassword:");
+    scanf("%s",&password);
+
+     while(fread(&l,sizeof(l),1,log)){
+        if (strcmp(username,l.username)==0 && strcmp (password,l.password)==0)
+        {
+             printf("\n\n\n\t\t\t\t **************** Successful Login ****************\n");
+             printf("\t\t\t\t\t****************************************************** \n\n");
+             printf("\t\t\t\t***************** Enter What you Want***************** \n\n");
+             printf("\t\t\t1. USER Dashboard\n");
+             printf("\t\t\t2. ADMIN Dashboard\n");
+
+        }
+
+        else{
+          printf("\t\t\tPlease Enter Correct UserID And Password\n");
+        }
+     }
+     fclose(log);
+
+}
+
+int Add_Contact()
+{
+    FILE *fp;
+    fp=fopen("contact.txt","a+");
+    system("cls");
+    printf("\t*****ADD CONTACT*****");
+    printf("\n\tName    :-");
+    char name[20];
+    scanf("%s",name);
+    printf("\n\tMob No. :-" );
+    char mob[20];
+    scanf("%s",mob);
+    printf("\n\tEmail :-" );
+    char email[40];
+    scanf("%s",email);
+    fprintf(fp,"%s %s %s\n",name,mob,email);
+    fclose(fp);
+    printf("\n\tSuccessfully add the contact...");
+    int ch;
+    printf("\n\tPress '1' for home or '2' for Exit");
+    printf("\n\tEnter Your Choice:");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+
+    }
+    getch();
+    User();
+}
+int Modify_Contact()
+{
+     FILE *fp;
+    fp=fopen("contact.txt","r");
+    system("cls");
+    printf("\t*****Modify Contact*****");
+    printf("\n\t Enter Name :-");
+    char name[20];
+    scanf("%s",name);
+    printf("\t 1. Modify_Name\n");
+    printf("\t 2. Modify_Number\n");
+    printf("\t 3. Modify_Email\n");
+    printf("Enter Your Choice:-");
+    int option;
+    scanf("%d",&option);
+    switch(option)
+    {
+        case 1:
+        Modify_Name();
+        break;
+    case 2:
+        Modify_Number();
+        break;
+    case 3:
+        Modify_Email();
+        break;
+    default:
+        main();
+    }
+    fclose(fp);
+    int ch;
+    printf("\n\tPress '1' for home or '2' for Exit");
+    printf("\n\tEnter Your Choice:");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+
+    }
+    getch();
+    User();
+}
+int View_All_Contact()
+{
+    FILE *fp;
+    fp=fopen("contact.txt","r");
+    system("cls");
+    printf("\t***** VIEW ALL CONTACTS*****\n");
+    char name1[20];
+    char mob[20];
+    char email[40];
+    while(fscanf(fp,"%s %s %s",name1,&mob,email)!=EOF)
+    {
+        printf("\n\t Name    :-  %s",name1);
+        printf("\n\t Mob no. :-  %s",mob);
+        printf("\n\t Email   :-  %s",email);
+    }
+    fclose(fp);
+    int ch;
+    printf("\n\n\t Press '1' for home");
+    printf("\n\t Press '2' for exit");
+    printf("\n\t Press '3' for add contact");
+    printf("\n\n\tEnter Your Choice:");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+    }
+    else if (ch==3)
+    {
+        system("CLS");
+        Add_Contact();
+    }
+    getch();
+    User();
+}
+int Delete_Contact()
+{
+    FILE *fp,*fp1;
+    fp=fopen("contact.txt","r+");
+    fp1=fopen("contact.txt","w");
+    system("cls");
+    printf("\t*****DELETE CONTACT*****\n");
+    printf("\n\t Enter Name :-");
+    char name[20];
+    scanf("%s",name);
+    char name1[20],mob[20];
+    while(fscanf(fp,"%s %s",name1,mob)!=EOF)
+    {
+        if(strcmp(name,name1)==0)
+        {
+            continue;
+        }
+        fprintf(fp1,"%s %s\n",name1,mob);
+    }
+    fclose(fp);
+    fclose(fp1);
+    fp=fopen("contact.txt","w");
+    fp1=fopen("contact.txt","r");
+    while(fscanf(fp1,"%s %s",name1,mob)!=EOF)
+    {
+
+        fprintf(fp,"%s %s\n",name1,mob);
+    }
+    fclose(fp);
+    fclose(fp1);
+    remove("contact.txt");
+    int ch;
+    printf("\n\tPress '1' for home or '2' for Exit");
+    printf("\n\tEnter Your Choice:");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+
+    }
+    getch();
+    User();
+}
+int View_Author_Profile()
+{
+    printf("\t_____Author Profile_____\n");
+
+
+    printf("\n\tName    :Nahid Shohag");
+    printf("\n\tMob_No. :00123456789");
+    printf("\n\tEmail   :nshohag145@gmail.com");
+    int ch;
+    printf("\n\n\tPress '1' for home or '2' for Exit");
+    printf("\n\tEnter Your Choice:-");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+
+    }
+    getch();
+
+}
+void Search_Contact()
+{
+    FILE *fp;
+    fp=fopen("contact.txt","r");
+    system("cls");
+    printf("\t*****SEARCH CONTACT*****\n");
+    printf("\n\t Enter Name :-");
+    char name[20];
+    scanf("%s",name);
+    char name1[20],mob[20],email[20];
+    while(fscanf(fp,"%s %s %s",name1,mob,&email)!=EOF)
+    {
+        if(strcmp(name,name1)==0)
+        {
+            printf("\n\tNAME     :- %s\n",name1);
+            printf("\n\tMOB NO.  :- %s\n",mob);
+            printf("\n\tEmail    :- %s\n",email);
+        }
+    }
+    fclose(fp);
+    int ch;
+    printf("\n\n\tPress '1' for home or '2' for Exit");
+    printf("\n\tEnter Your Choice:");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+
+    }
+    getch();
+    User();
+}
+void about()
+{
+    system("cls");
+    printf("\t\t\t\t\t\t ABOUT THIS PROJECT\n");
+    printf(" \t ---> The PMS (PHONEBOOK MANAGEMENT SYSTEM) is a basic program used in android phone in C programming Language.\n");
+    printf(" \t ---> This Application helps to manage the contact list in your android phone.\n");
+    printf(" \t ---> In this project It's designed for people who likes to keep all their contacts in a text file.\n");
+    printf(" \t ---> You can also add contact, delete contact info & find contacts from the list.\n");
+    int ch;
+    printf("\n\n\tPress '1' for home or '2' for Exit");
+    printf("\n\tEnter Your Choice:");
+    scanf("%d",&ch);
+
+    if (ch==1)
+    {
+        system ("CLS");
+        User();
+
+    }
+    else if (ch==2)
+    {
+        system ("CLS");
+        main();
+
+    }
+    getch();
+    User();
+}
+
+void Exit(int status);
+
+int Modify_Name()
+{
+
+}
+
+int Modify_Number()
+{
+
+}
+
+int Modify_Email()
+{
+
+}
+
+int User()
+{
+    printf("\t\t ****************************************************************\n");
+    printf("\t\t\t\t << User PANEL OF THE PROJECT >>\n");
+    printf("\t\t ****************************************************************\n");
+    printf("\t\t\t\t [[[ Welcome to MY PHONE BOOK ]]] \n");
+    printf("\t\t-----------------------------------------------------------------\n\n");
+    printf("\t\t\t 1. Add Contact\n");
+    printf("\t\t\t 2. Modify Contact\n");
+    printf("\t\t\t 3. View All Contact\n");
+    printf("\t\t\t 4. View Author Profile\n");
+    printf("\t\t\t 5. Delete Contact\n");
+    printf("\t\t\t 6. Search Contact\n");
+    printf("\t\t\t 7. About\n");
+    printf("\t\t\t 8. Exit\n\n");
+    int cho;
+    printf("\tEnter Your Choice:-");
+    scanf("%d",&cho);
+    switch(cho)
+    {
+    case 1:
+          Add_Contact();
+        break;
+    case 2:
+          Modify_Contact();
+        break;
+    case 3:
+          View_All_Contact();
+        break;
+    case 4:
+          View_Author_Profile();
+        break;
+    case 5:
+          Delete_Contact();
+        break;
+    case 6:
+          Search_Contact();
+        break;
+    case 7:
+          about();
+        break;
+
+    default:
+        printf("Wrong Input\n");
+
+    }
+    User();
+}
+
+int main()
+{
+    printf("\n\n");
+    printf("                       ******************************************************** \n");
+    printf("\t\t\t     Project Name: || PHONEBOOK MANAGEMENT SYSTEM  ||\n");
+    printf("                       ******************************************************** \n\n\n\n");
+
+    int cho;
+    printf("\t\t\t========================\n");
+    printf("\t\t\t 1. REGISTRATION\n");
+    printf("\n\t\t\t 2. LOGIN\n");
+    printf("\t\t\t========================");
+    printf("\n\n\t\t\t Please Enter Your Choice:");
+    scanf("%d",&cho);
+    if (cho==1)
+    {
+        system ("CLS");
+        registe();
+
+    }
+    else if (cho==2)
+    {
+        system ("CLS");
+        login();
+
+    }
+    int ch;
+    printf("\n\t\t\tPress 1 to Login");
+    printf("\n\t\t\tPress 2 to Go Back");
+    printf("\n\n\t\t\tEnter Your Choice:--> ");
+    scanf("%d", &ch);
+    switch(ch)
+    {
+    case 1:
+        User();
+        break;
+    case 2:
+        main();
+        break;
+
+    default:
+        printf("\t\t\tWrong Input\n");
+    }
+
+    return 0;
+
+}
+
